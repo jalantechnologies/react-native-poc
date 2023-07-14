@@ -1,5 +1,5 @@
 /* eslint-disable no-useless-catch */
-import TwilioServiceSelf from '../twilio-service-self';
+import TwilioService from '../../communication/internals/twilio-service';
 import { Account, CreateAccountParams } from '../types';
 
 import AccountReader from './account-reader';
@@ -24,8 +24,6 @@ export default class AccountWriter {
   public static async createAccountWithPhoneNumber(params){
     // await AccountReader.checkPhoneNumberNotExists(params);
     const {phoneNumber} = params; // got the phone number and make entry to monogo
-
-    return TwilioServiceSelf.sendOtp(phoneNumber)
-
+    return TwilioService.sendOtp(phoneNumber);
   }
 }

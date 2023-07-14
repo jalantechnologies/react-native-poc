@@ -29,7 +29,7 @@ export default class AccountController {
       const { phoneNumber } = req.body;
       const params = { phoneNumber };
       await AccountService.createAccountWithPhoneNumber(params);
-      res.status(201).send('otp sent');
+      res.status(201).send(`otp sent to ${phoneNumber}`);
     } catch (e) {
       next(e);
     }
