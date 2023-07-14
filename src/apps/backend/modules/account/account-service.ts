@@ -10,6 +10,10 @@ export default class AccountService {
     return AccountWriter.createAccount(params);
   }
 
+  public static async createAccountWithPhoneNumber(params) {
+    return AccountWriter.createAccountWithPhoneNumber(params);
+  }
+
   public static async getAccountByUsernamePassword(
     params: AccountSearchParams,
   ): Promise<Account> {

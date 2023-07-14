@@ -12,3 +12,4 @@ grafana:
 
 public:
   env: 'development'
+

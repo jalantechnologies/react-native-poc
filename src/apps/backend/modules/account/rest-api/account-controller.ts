@@ -10,10 +10,26 @@ export default class AccountController {
     next: NextFunction,
   ): Promise<void> {
     try {
-      const { username, password }: CreateAccountParams = req.body as CreateAccountParams;
+      const { username, password }: CreateAccountParams =
+        req.body as CreateAccountParams;
       const params: CreateAccountParams = { username, password };
       const account = await AccountService.createAccount(params);
       res.status(201).send(AccountController.serializeAccountAsJSON(account));
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  public static async createAccountWithPhoneNumber(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> {
+    try {
+      const { phoneNumber } = req.body;
+      const params = { phoneNumber };
+      await AccountService.createAccountWithPhoneNumber(params);
+      res.status(201).send('otp sent');
     } catch (e) {
       next(e);
     }
