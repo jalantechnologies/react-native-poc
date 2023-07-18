@@ -10,10 +10,9 @@ export default class AccountRouter {
 
     router.post('/', AccountController.createAccount);
 
-    // router.post('/sendOtp', TwilioServiceSelf.sendOtp);
-    // router.post('/verifyOtp', TwilioServiceSelf.verifyOtp);
-
     router.post('/phone', AccountController.createAccountWithPhoneNumber);
+
+    router.post('/phoneVerify', AccountController.verifyAccountWithPhoneNumber)
 
     return router;
   }

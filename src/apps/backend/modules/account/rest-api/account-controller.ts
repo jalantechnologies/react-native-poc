@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 
 import AccountService from '../account-service';
 import { Account, CreateAccountParams } from '../types';
+import SMSService from '../../communication/sms-service';
 
 export default class AccountController {
   public static async createAccount(
@@ -27,9 +28,29 @@ export default class AccountController {
   ): Promise<void> {
     try {
       const { phoneNumber } = req.body;
-      const params = { phoneNumber };
-      await AccountService.createAccountWithPhoneNumber(params);
+      await AccountService.createAccountWithPhoneNumber(phoneNumber);
+      await SMSService.sendOtp(phoneNumber);
       res.status(201).send(`otp sent to ${phoneNumber}`);
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  public static async verifyAccountWithPhoneNumber(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> {
+    try {
+      const { phoneNumber, otp } = req.body;
+      const params = { phoneNumber, otp };
+      const response = await SMSService.verifyOtp(params);
+
+      if (response.status === 'approved') {
+        res.status(201).send(`verified successfully ${phoneNumber}`);
+      } else {
+        res.status(422).send(`Incorrect otp try again`);
+      }
     } catch (e) {
       next(e);
     }

@@ -9,9 +9,25 @@ export class Account {
   hashedPassword: string;
 }
 
+export class PhoneAccount {
+  id: string;
+  phoneNumber: string;
+}
+
 export type CreateAccountParams = {
   username: string;
   password: string;
+};
+
+//TODO:
+export type PhoneNumber = {
+  phoneNumber: string;
+};
+
+//TODO:
+export type CreatephoneOtpParams = {
+  phoneNumber: PhoneNumber;
+  otp: number;
 };
 
 export type AccountSearchParams = {
@@ -30,6 +46,16 @@ export class AccountWithUserNameExistsError extends AppError {
 
   constructor(username: string) {
     super(`An account with username ${username} already exists.`);
+    this.code = AccountErrorCode.USERNAME_ALREADY_EXISTS;
+    this.httpStatusCode = 409;
+  }
+}
+
+export class AccountWithPhoneNumberExistsError extends AppError {
+  code: AccountErrorCode;
+
+  constructor(phoneNumber: string) {
+    super(`An account with username ${phoneNumber} already exists`);
     this.code = AccountErrorCode.USERNAME_ALREADY_EXISTS;
     this.httpStatusCode = 409;
   }

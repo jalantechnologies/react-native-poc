@@ -2,6 +2,7 @@ import {
   Account,
   AccountNotFoundError,
   AccountSearchParams,
+  AccountWithPhoneNumberExistsError,
   AccountWithUserNameExistsError,
   InvalidCredentialsError,
 } from '../types';
@@ -46,6 +47,19 @@ export default class AccountReader {
     });
     if (dbAccount) {
       throw new AccountWithUserNameExistsError(params.username);
+    }
+  }
+
+  public static async checkPhoneNumberNotExists(
+    phoneNumber: string,
+  ): Promise<void> {
+    const dbAccount = await AccountRepository.phoneAccountDB.findOne({
+      phoneNumber: phoneNumber,
+      active: true,
+    });
+
+    if (dbAccount) {
+      throw new AccountWithPhoneNumberExistsError(phoneNumber);
     }
   }
 }

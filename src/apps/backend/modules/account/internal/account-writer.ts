@@ -1,5 +1,4 @@
 /* eslint-disable no-useless-catch */
-import TwilioService from '../../communication/internals/twilio-service';
 import { Account, CreateAccountParams } from '../types';
 
 import AccountReader from './account-reader';
@@ -20,10 +19,14 @@ export default class AccountWriter {
     return AccountUtil.convertAccountDBToAccount(dbAccount);
   }
 
+  public static async createAccountWithPhoneNumber(phoneNumber) {
+    await AccountReader.checkPhoneNumberNotExists(phoneNumber);
+    // got the phone number and make entry to monogo
+    const dbAccount = await AccountRepository.phoneAccountDB.create({
+      phoneNumber: phoneNumber,
+      active: true,
+    });
 
-  public static async createAccountWithPhoneNumber(params){
-    // await AccountReader.checkPhoneNumberNotExists(params);
-    const {phoneNumber} = params; // got the phone number and make entry to monogo
-    return TwilioService.sendOtp(phoneNumber);
+    return AccountUtil.convertPhoneAccountDBToAccount(dbAccount);
   }
 }

@@ -4,9 +4,14 @@ import { VerificationCheckInstance } from 'twilio/lib/rest/verify/v2/service/ver
 
 import ConfigService from '../../config/config-service';
 import Logger from '../../logger/logger';
-import { SendSMSParams, ThirdPartyServiceError } from '../types';
+import {
+  PhoneOtpParams,
+  SendSMSParams,
+  ThirdPartyServiceError,
+} from '../types';
 
 import SMSParams from './twilio-params';
+import { PhoneNumber } from 'twilio/lib/interfaces';
 
 export default class TwilioService {
   private static twilio: Twilio;
@@ -42,7 +47,9 @@ export default class TwilioService {
     }
   }
 
-  public static async sendOtp(phoneNumber): Promise<VerificationInstance> {
+  public static async sendOtp(
+    phoneNumber: PhoneNumber,
+  ): Promise<VerificationInstance> {
     try {
       return await this.twilio.verify.v2
         .services(ConfigService.getStringValue('twilio.verify.verifySid'))
@@ -53,16 +60,18 @@ export default class TwilioService {
     }
   }
 
-  public static async verifyOtp(params): Promise<VerificationCheckInstance> {
+  public static async verifyOtp(
+    params: PhoneOtpParams,
+  ): Promise<VerificationCheckInstance> {
     const { phoneNumber, otp } = params;
-
     try {
-      return await this.twilio.verify.v2
+      const response = await this.twilio.verify.v2
         .services(ConfigService.getStringValue('twilio.verify.verifySid'))
         .verificationChecks.create({
           to: phoneNumber,
           code: otp,
         });
+      return response;
     } catch (e) {
       Logger.error(e.message);
       throw new ThirdPartyServiceError('SMS service unavailable.');
