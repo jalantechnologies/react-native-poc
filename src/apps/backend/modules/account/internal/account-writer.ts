@@ -19,7 +19,7 @@ export default class AccountWriter {
     return AccountUtil.convertAccountDBToAccount(dbAccount);
   }
 
-  public static async createAccountWithPhoneNumber(phoneNumber) {
+  public static async createAccountWithPhoneNumber(phoneNumber:string) {
     await AccountReader.checkPhoneNumberNotExists(phoneNumber);
     // got the phone number and make entry to monogo
     const dbAccount = await AccountRepository.phoneAccountDB.create({

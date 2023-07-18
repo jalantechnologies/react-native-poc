@@ -3,6 +3,7 @@ import { NextFunction, Request, Response } from 'express';
 import AccountService from '../account-service';
 import { Account, CreateAccountParams } from '../types';
 import SMSService from '../../communication/sms-service';
+import AccountReader from '../internal/account-reader';
 
 export default class AccountController {
   public static async createAccount(
@@ -28,7 +29,7 @@ export default class AccountController {
   ): Promise<void> {
     try {
       const { phoneNumber } = req.body;
-      await AccountService.createAccountWithPhoneNumber(phoneNumber);
+      await AccountReader.checkPhoneNumberNotExists(phoneNumber);
       await SMSService.sendOtp(phoneNumber);
       res.status(201).send(`otp sent to ${phoneNumber}`);
     } catch (e) {
@@ -47,6 +48,7 @@ export default class AccountController {
       const response = await SMSService.verifyOtp(params);
 
       if (response.status === 'approved') {
+        await AccountService.createAccountWithPhoneNumber(phoneNumber);
         res.status(201).send(`verified successfully ${phoneNumber}`);
       } else {
         res.status(422).send(`Incorrect otp try again`);

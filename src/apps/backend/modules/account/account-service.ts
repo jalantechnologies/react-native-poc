@@ -10,7 +10,7 @@ export default class AccountService {
     return AccountWriter.createAccount(params);
   }
 
-  public static async createAccountWithPhoneNumber(phoneNumber) {
+  public static async createAccountWithPhoneNumber(phoneNumber: string) {
     return AccountWriter.createAccountWithPhoneNumber(phoneNumber);
   }
 
@@ -20,7 +20,7 @@ export default class AccountService {
     return AccountReader.getAccountByUsernamePassword(params);
   }
 
-  public static async getAccountByPhone(params){
+  public static async getAccountByPhone(params) {
     return AccountReader.getAccountByPhone(params);
   }
 }
