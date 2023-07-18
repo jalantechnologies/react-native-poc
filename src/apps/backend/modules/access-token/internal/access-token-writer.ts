@@ -36,4 +36,35 @@ export default class AccessTokenWriter {
 
     return accessToken;
   }
+
+
+
+  public static async createPhoneAccessToken(params){
+    const accountSearchParams = {
+      phoneNumber: params.phoneNumber,
+    };
+    const account = await AccountService.getAccountByPhone(
+      accountSearchParams,
+    );
+    const jwtSigningKey = ConfigService.getStringValue('jwt.token');
+    const jwtToken = jsonwebtoken.sign(
+      { accountId: account.id },
+      jwtSigningKey,
+      {
+        expiresIn: ConfigService.getStringValue('jwt.expiresIn'),
+      },
+    );
+    const accessToken = new AccessToken();
+    accessToken.accountId = account.id;
+    accessToken.token = jwtToken;
+
+    const vetifiedToken: jsonwebtoken.JwtPayload = jsonwebtoken.verify(
+      jwtToken,
+      jwtSigningKey,
+    ) as jsonwebtoken.JwtPayload;
+
+    accessToken.expiresAt = new Date(vetifiedToken.exp * 1000);
+
+    return accessToken;
+  }
 }

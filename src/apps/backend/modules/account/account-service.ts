@@ -19,4 +19,8 @@ export default class AccountService {
   ): Promise<Account> {
     return AccountReader.getAccountByUsernamePassword(params);
   }
+
+  public static async getAccountByPhone(params){
+    return AccountReader.getAccountByPhone(params);
+  }
 }

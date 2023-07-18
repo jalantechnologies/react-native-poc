@@ -7,4 +7,8 @@ export default class AccessTokenService {
   ): Promise<AccessToken> {
     return AccessTokenWriter.createAccessToken(params);
   }
+
+  public static async createPhoneAccessToken(params){
+    return AccessTokenWriter.createPhoneAccessToken(params);
+  }
 }

@@ -71,6 +71,16 @@ export class AccountNotFoundError extends AppError {
   }
 }
 
+export class PhoneAccountNotFoundError extends AppError {
+  code: AccountErrorCode;
+
+  constructor(phoneNumber: string) {
+    super(`${phoneNumber} number not found.`);
+    this.code = AccountErrorCode.NOT_FOUND;
+    this.httpStatusCode = 404;
+  }
+}
+
 export class InvalidCredentialsError extends AppError {
   code: AccountErrorCode;
 

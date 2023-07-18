@@ -10,9 +10,28 @@ export default class AccessTokenController {
     next: NextFunction,
   ): Promise<void> {
     try {
-      const { username, password }: CreateAccessTokenParams = req.body as CreateAccessTokenParams;
+      const { username, password }: CreateAccessTokenParams =
+        req.body as CreateAccessTokenParams;
       const params: CreateAccessTokenParams = { username, password };
       const accessToken = await AccessTokenService.createAccessToken(params);
+      res.send(AccessTokenController.serializeAccessTokenAsJSON(accessToken));
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  public static async createPhoneAccessToken(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> {
+    try {
+      const { phoneNumber } = req.body;
+      const params = { phoneNumber };
+
+      const accessToken = await AccessTokenService.createPhoneAccessToken(
+        params,
+      );
       res.send(AccessTokenController.serializeAccessTokenAsJSON(accessToken));
     } catch (e) {
       next(e);
