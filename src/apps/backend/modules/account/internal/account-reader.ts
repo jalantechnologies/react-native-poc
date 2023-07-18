@@ -6,6 +6,7 @@ import {
   AccountWithUserNameExistsError,
   InvalidCredentialsError,
   PhoneAccountNotFoundError,
+  phoneAccountSearchParams,
 } from '../types';
 
 import AccountUtil from './account-util';
@@ -24,7 +25,7 @@ export default class AccountReader {
     return AccountUtil.convertAccountDBToAccount(dbAccount);
   }
 
-  public static async getAccountByPhone(params) {
+  public static async getAccountByPhone(params: phoneAccountSearchParams) {
     const { phoneNumber } = params;
     const dbAccount = await AccountRepository.phoneAccountDB.findOne({
       phoneNumber,

@@ -35,6 +35,10 @@ export type AccountSearchParams = {
   password: string;
 };
 
+export type phoneAccountSearchParams = {
+  phoneNumber: string;
+};
+
 export enum AccountErrorCode {
   USERNAME_ALREADY_EXISTS = 'ACCOUNT_ERR_01',
   NOT_FOUND = 'ACCOUNT_ERR_02',

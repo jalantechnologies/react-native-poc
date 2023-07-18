@@ -2,9 +2,14 @@ import jsonwebtoken from 'jsonwebtoken';
 
 import AccountService from '../../account/account-service';
 import ConfigService from '../../config/config-service';
-import { AccessToken, CreateAccessTokenParams } from '../types';
+import {
+  AccessToken,
+  CreateAccessTokenParams,
+  CreatePhoneAccessTokenParams,
+} from '../types';
 
 export default class AccessTokenWriter {
+  
   public static async createAccessToken(
     params: CreateAccessTokenParams,
   ): Promise<AccessToken> {
@@ -27,25 +32,23 @@ export default class AccessTokenWriter {
     accessToken.accountId = account.id;
     accessToken.token = jwtToken;
 
-    const vetifiedToken: jsonwebtoken.JwtPayload = jsonwebtoken.verify(
+    const verifiedToken: jsonwebtoken.JwtPayload = jsonwebtoken.verify(
       jwtToken,
       jwtSigningKey,
     ) as jsonwebtoken.JwtPayload;
 
-    accessToken.expiresAt = new Date(vetifiedToken.exp * 1000);
+    accessToken.expiresAt = new Date(verifiedToken.exp * 1000);
 
     return accessToken;
   }
 
-
-
-  public static async createPhoneAccessToken(params){
+  public static async createPhoneAccessToken(
+    params: CreatePhoneAccessTokenParams,
+  ) {
     const accountSearchParams = {
       phoneNumber: params.phoneNumber,
     };
-    const account = await AccountService.getAccountByPhone(
-      accountSearchParams,
-    );
+    const account = await AccountService.getAccountByPhone(accountSearchParams);
     const jwtSigningKey = ConfigService.getStringValue('jwt.token');
     const jwtToken = jsonwebtoken.sign(
       { accountId: account.id },
@@ -58,12 +61,12 @@ export default class AccessTokenWriter {
     accessToken.accountId = account.id;
     accessToken.token = jwtToken;
 
-    const vetifiedToken: jsonwebtoken.JwtPayload = jsonwebtoken.verify(
+    const verifiedToken: jsonwebtoken.JwtPayload = jsonwebtoken.verify(
       jwtToken,
       jwtSigningKey,
     ) as jsonwebtoken.JwtPayload;
 
-    accessToken.expiresAt = new Date(vetifiedToken.exp * 1000);
+    accessToken.expiresAt = new Date(verifiedToken.exp * 1000);
 
     return accessToken;
   }

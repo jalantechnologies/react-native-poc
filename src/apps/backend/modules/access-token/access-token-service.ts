@@ -1,5 +1,9 @@
 import AccessTokenWriter from './internal/access-token-writer';
-import { AccessToken, CreateAccessTokenParams } from './types';
+import {
+  AccessToken,
+  CreateAccessTokenParams,
+  CreatePhoneAccessTokenParams,
+} from './types';
 
 export default class AccessTokenService {
   public static async createAccessToken(
@@ -8,7 +12,9 @@ export default class AccessTokenService {
     return AccessTokenWriter.createAccessToken(params);
   }
 
-  public static async createPhoneAccessToken(params){
+  public static async createPhoneAccessToken(
+    params: CreatePhoneAccessTokenParams,
+  ) {
     return AccessTokenWriter.createPhoneAccessToken(params);
   }
 }

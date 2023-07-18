@@ -1,7 +1,11 @@
 import { NextFunction, Request, Response } from 'express';
 
 import AccessTokenService from '../access-token-service';
-import { AccessToken, CreateAccessTokenParams } from '../types';
+import {
+  AccessToken,
+  CreateAccessTokenParams,
+  CreatePhoneAccessTokenParams,
+} from '../types';
 
 export default class AccessTokenController {
   public static async createAccessToken(
@@ -26,7 +30,7 @@ export default class AccessTokenController {
     next: NextFunction,
   ): Promise<void> {
     try {
-      const { phoneNumber } = req.body;
+      const { phoneNumber } = req.body as CreatePhoneAccessTokenParams;
       const params = { phoneNumber };
 
       const accessToken = await AccessTokenService.createPhoneAccessToken(

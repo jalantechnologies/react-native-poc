@@ -1,7 +1,7 @@
 // import AccountReader from './internal/account-reader';
 import AccountReader from './internal/account-reader';
 import AccountWriter from './internal/account-writer';
-import { Account, AccountSearchParams, CreateAccountParams } from './types';
+import { Account, AccountSearchParams, CreateAccountParams, phoneAccountSearchParams } from './types';
 
 export default class AccountService {
   public static async createAccount(
@@ -20,7 +20,7 @@ export default class AccountService {
     return AccountReader.getAccountByUsernamePassword(params);
   }
 
-  public static async getAccountByPhone(params) {
+  public static async getAccountByPhone(params:phoneAccountSearchParams) {
     return AccountReader.getAccountByPhone(params);
   }
 }
