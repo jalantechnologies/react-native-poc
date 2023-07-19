@@ -7,7 +7,7 @@ export class UserInfo {
   first_name: string;
   last_name: string;
   email: string;
-  profile_img: Buffer | null;
+  profile_img: string | null;
 }
 
 export class Task {
@@ -53,6 +53,7 @@ export enum TaskErrorCode {
   NOT_FOUND = 'TASK_ERR_01',
   TASK_ALREADY_EXISTS = 'TASK_ERR_02',
   UNAUTHORIZED_TASK_ACCESS = 'TASK_ERR_03',
+  USERNAME_DETAILS_PRESENT = 'TASK_ERR_04',
 }
 
 export class TaskWithNameExistsError extends AppError {
@@ -61,6 +62,16 @@ export class TaskWithNameExistsError extends AppError {
   constructor(name: string) {
     super(`Task with name ${name} already exists.`);
     this.code = TaskErrorCode.TASK_ALREADY_EXISTS;
+    this.httpStatusCode = 409;
+  }
+}
+
+export class TaskWithUserNameExistsError extends AppError {
+  code: TaskErrorCode;
+
+  constructor(email: string) {
+    super(`email ${email} details already exist in the database`);
+    this.code = TaskErrorCode.USERNAME_DETAILS_PRESENT;
     this.httpStatusCode = 409;
   }
 }

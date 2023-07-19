@@ -7,6 +7,15 @@ import {
   DeleteTaskParams,
   GetTaskParams,
 } from '../types';
+import cloudinary from 'cloudinary';
+import ConfigService from '../../config/config-service';
+import TaskUtil from '../internal/task-util';
+
+cloudinary.v2.config({
+  cloud_name: ConfigService.getStringValue('cloudinary.verify.cloud_name'),
+  api_key: ConfigService.getStringValue('cloudinary.verify.api_key'),
+  api_secret: ConfigService.getStringValue('cloudinary.verify.api_secret'),
+});
 
 export default class TaskController {
   public static async editInfo(
@@ -15,12 +24,18 @@ export default class TaskController {
     next: NextFunction,
   ): Promise<void> {
     try {
+      let myCloudinary;
+      if (req.file) {
+        const fileUri = await TaskUtil.getDataUri(req.file);
+        myCloudinary = await cloudinary.v2.uploader.upload(fileUri.content);
+      }
+
       const params = {
         accountId: req.params.accountId,
         first_name: req.body.first_name,
         last_name: req.body.last_name,
         email: req.body.email,
-        profile_img: req.file.buffer,
+        profile_img: myCloudinary?.secure_url || null,
       };
 
       await TaskService.editInfo(params);

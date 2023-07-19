@@ -2,6 +2,9 @@ import { Task, UserInfo } from '../types';
 
 import { TaskDB, UserInfoDB } from './store/task-db';
 
+import DataURIParser from 'datauri/parser';
+import path from 'path';
+
 export default class TaskUtil {
   public static convertEditInfoDBToInfo(infoDb: UserInfoDB) {
     const info = new UserInfo();
@@ -20,5 +23,11 @@ export default class TaskUtil {
     task.account = taskDb.account.toString();
     task.name = taskDb.name;
     return task;
+  }
+
+  public static async getDataUri(file) {
+    const parser = new DataURIParser();
+    const extName = path.extname(file.originalname).toString();
+    return parser.format(extName, file.buffer);
   }
 }
