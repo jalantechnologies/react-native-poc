@@ -10,6 +10,7 @@ export default class TaskUtil {
     info.first_name = infoDb.first_name;
     info.last_name = infoDb.last_name;
     info.email = infoDb.email;
+    info.profile_img = infoDb.profile_img;
 
     return info;
   }

@@ -1,5 +1,4 @@
 import { NextFunction, Request, Response } from 'express';
-
 import TaskService from '../task-service';
 import {
   Task,
@@ -21,7 +20,7 @@ export default class TaskController {
         first_name: req.body.first_name,
         last_name: req.body.last_name,
         email: req.body.email,
-        // profile_img: req.body.profile_img,
+        profile_img: req.file.buffer,
       };
 
       await TaskService.editInfo(params);

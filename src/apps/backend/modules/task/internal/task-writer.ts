@@ -18,6 +18,7 @@ export default class TaskWriter {
       last_name: params.last_name,
       email: params.email,
       active: true,
+      profile_img: params.profile_img,
     });
 
     return TaskUtil.convertEditInfoDBToInfo(editedInfo);

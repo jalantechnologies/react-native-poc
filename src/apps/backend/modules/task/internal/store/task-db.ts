@@ -7,6 +7,7 @@ export interface UserInfoDB {
   first_name: string;
   last_name: string;
   email: string;
+  profile_img: Buffer | null;
 }
 
 export interface TaskDB {
@@ -37,6 +38,7 @@ export const userInfoDBSchema: Schema = new Schema<UserInfoDB>(
       type: String,
       required: true,
     },
+    profile_img: { type: Buffer, default: null },
   },
   {
     timestamps: {

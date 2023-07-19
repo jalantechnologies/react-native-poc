@@ -7,6 +7,7 @@ export class UserInfo {
   first_name: string;
   last_name: string;
   email: string;
+  profile_img: Buffer | null;
 }
 
 export class Task {
