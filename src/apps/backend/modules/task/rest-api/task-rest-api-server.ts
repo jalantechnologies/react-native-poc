@@ -7,9 +7,6 @@ import multer from 'multer';
 
 export default class TaskRESTApiServer {
   public static async create(): Promise<Application> {
-    // const storage = multer.memoryStorage();
-    // const upload = multer({ storage: storage });
-
     const upload = multer({
       storage: multer.memoryStorage(),
       fileFilter: (_req, file, callback) => {
