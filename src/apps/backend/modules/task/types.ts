@@ -1,6 +1,14 @@
 // eslint-disable-next-line max-classes-per-file
 import AppError from '../error/app-error';
 
+export class UserInfo {
+  id: string;
+  account: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+}
+
 export class Task {
   id: string;
 
@@ -21,7 +29,7 @@ export type GetTaskParams = {
 };
 
 export type GetTaskByNameParams = {
-  accountId: string,
+  accountId: string;
   name: string;
 };
 

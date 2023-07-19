@@ -1,8 +1,18 @@
-import { Task } from '../types';
+import { Task, UserInfo } from '../types';
 
-import { TaskDB } from './store/task-db';
+import { TaskDB, UserInfoDB } from './store/task-db';
 
 export default class TaskUtil {
+  public static convertEditInfoDBToInfo(infoDb: UserInfoDB) {
+    const info = new UserInfo();
+    info.id = infoDb._id.toString();
+    info.account = infoDb.account.toString();
+    info.first_name = infoDb.first_name;
+    info.last_name = infoDb.last_name;
+    info.email = infoDb.email;
+
+    return info;
+  }
   public static convertTaskDBToTask(taskDb: TaskDB): Task {
     const task = new Task();
     task.id = taskDb._id.toString();

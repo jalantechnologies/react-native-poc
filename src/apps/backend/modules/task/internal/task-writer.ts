@@ -11,6 +11,18 @@ import TaskReader from './task-reader';
 import TaskUtil from './task-util';
 
 export default class TaskWriter {
+  public static async editInfo(params) {
+    const editedInfo = await TaskRepository.userInfoDB.create({
+      account: params.accountId,
+      first_name: params.first_name,
+      last_name: params.last_name,
+      email: params.email,
+      active: true,
+    });
+
+    return TaskUtil.convertEditInfoDBToInfo(editedInfo);
+  }
+
   public static async createTask(params: CreateTaskParams): Promise<Task> {
     const existingTask = await TaskRepository.taskDB.findOne({
       account: params.accountId,

@@ -10,6 +10,10 @@ import {
 } from './types';
 
 export default class TaskService {
+  public static async editInfo(params){
+    return TaskWriter.editInfo(params);
+  }
+
   public static async createTask(params: CreateTaskParams): Promise<Task> {
     return TaskWriter.createTask(params);
   }

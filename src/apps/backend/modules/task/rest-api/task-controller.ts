@@ -1,6 +1,4 @@
-import {
-  NextFunction, Request, Response,
-} from 'express';
+import { NextFunction, Request, Response } from 'express';
 
 import TaskService from '../task-service';
 import {
@@ -12,6 +10,27 @@ import {
 } from '../types';
 
 export default class TaskController {
+  public static async editInfo(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> {
+    try {
+      const params = {
+        accountId: req.params.accountId,
+        first_name: req.body.first_name,
+        last_name: req.body.last_name,
+        email: req.body.email,
+        // profile_img: req.body.profile_img,
+      };
+
+      await TaskService.editInfo(params);
+      res.status(201).send(`user info added successfully`);
+    } catch (e) {
+      next(e);
+    }
+  }
+
   public static async createTask(
     req: Request,
     res: Response,
@@ -50,7 +69,7 @@ export default class TaskController {
     req: Request,
     res: Response,
     next: NextFunction,
-  ): Promise <void> {
+  ): Promise<void> {
     try {
       const page = +req.query.page;
       const size = +req.query.size;
@@ -60,7 +79,9 @@ export default class TaskController {
         size,
       };
       const tasks = await TaskService.getTasksForAccount(params);
-      res.status(200).send(tasks.map((task) => TaskController.serializeTaskAsJSON(task)));
+      res
+        .status(200)
+        .send(tasks.map((task) => TaskController.serializeTaskAsJSON(task)));
     } catch (e) {
       next(e);
     }
