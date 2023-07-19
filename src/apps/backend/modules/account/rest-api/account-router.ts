@@ -10,13 +10,12 @@ export default class AccountRouter {
 
     router.post('/', AccountController.createAccount);
 
-    router.post('/phoneLogin', AccountController.loginWithPhoneNumber)
-
-    router.post('/phoneLoginVerify',AccountController.verifyWithPhoneNumber)
-
     router.post('/phoneSignUp', AccountController.createAccountWithPhoneNumber);
 
-    router.post('/phoneSignUpVerify', AccountController.verifyCreateAccountWithPhoneNumber)
+    router.post(
+      '/phoneSignUpVerify',
+      AccountController.verifyCreateAccountWithPhoneNumber,
+    );
 
     return router;
   }

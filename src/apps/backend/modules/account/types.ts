@@ -19,12 +19,10 @@ export type CreateAccountParams = {
   password: string;
 };
 
-//TODO:
 export type PhoneNumber = {
   phoneNumber: string;
 };
 
-//TODO:
 export type CreatephoneOtpParams = {
   phoneNumber: PhoneNumber;
   otp: number;
@@ -35,7 +33,7 @@ export type AccountSearchParams = {
   password: string;
 };
 
-export type phoneAccountSearchParams = {
+export type PhoneAccountSearchParams = {
   phoneNumber: string;
 };
 
@@ -59,7 +57,7 @@ export class AccountWithPhoneNumberExistsError extends AppError {
   code: AccountErrorCode;
 
   constructor(phoneNumber: string) {
-    super(`An account with username ${phoneNumber} already exists`);
+    super(`An account with phone number ${phoneNumber} already exists`);
     this.code = AccountErrorCode.USERNAME_ALREADY_EXISTS;
     this.httpStatusCode = 409;
   }

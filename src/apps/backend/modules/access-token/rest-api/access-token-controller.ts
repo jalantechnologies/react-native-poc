@@ -5,7 +5,10 @@ import {
   AccessToken,
   CreateAccessTokenParams,
   CreatePhoneAccessTokenParams,
+  PhoneAccountSearchParams,
 } from '../types';
+import SMSService from '../../communication/sms-service';
+import AccountService from '../../account/account-service';
 
 export default class AccessTokenController {
   public static async createAccessToken(
@@ -19,6 +22,42 @@ export default class AccessTokenController {
       const params: CreateAccessTokenParams = { username, password };
       const accessToken = await AccessTokenService.createAccessToken(params);
       res.send(AccessTokenController.serializeAccessTokenAsJSON(accessToken));
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  public static async loginWithPhoneNumber(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> {
+    try {
+      const { phoneNumber } = req.body;
+      const params: PhoneAccountSearchParams = { phoneNumber };
+      await AccountService.getAccountByPhone(params);
+      await SMSService.sendOtp(phoneNumber);
+      res.status(201).send(`otp sent to ${phoneNumber}`);
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  public static async verifyWithPhoneNumber(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> {
+    try {
+      const { phoneNumber, otp } = req.body;
+      const params = { phoneNumber, otp };
+      const response = await SMSService.verifyOtp(params);
+
+      if (response.status === 'approved') {
+        res.status(201).send(`verified successfully ${phoneNumber}`);
+      } else {
+        res.status(422).send(`Incorrect otp try again`);
+      }
     } catch (e) {
       next(e);
     }
