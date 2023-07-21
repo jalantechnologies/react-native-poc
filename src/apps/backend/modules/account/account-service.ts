@@ -5,6 +5,7 @@ import {
   Account,
   AccountSearchParams,
   CreateAccountParams,
+  PhoneAccount,
   PhoneAccountSearchParams,
 } from './types';
 
@@ -15,21 +16,27 @@ export default class AccountService {
     return AccountWriter.createAccount(params);
   }
 
-  public static async createAccountWithPhoneNumber(phoneNumber: string) {
-    return AccountWriter.createAccountWithPhoneNumber(phoneNumber);
-  }
-
   public static async getAccountByUsernamePassword(
     params: AccountSearchParams,
   ): Promise<Account> {
     return AccountReader.getAccountByUsernamePassword(params);
   }
 
-  public static async checkPhoneNumberNotExists(phoneNumber: string) {
-    return AccountReader.checkPhoneNumberNotExists(phoneNumber);
+  public static async createAccountWithPhoneNumber(
+    phoneNumber: string,
+  ): Promise<PhoneAccount> {
+    return AccountWriter.createAccountWithPhoneNumber(phoneNumber);
   }
 
-  public static async getAccountByPhone(params: PhoneAccountSearchParams) {
+  public static async getAccountByPhone(
+    params: PhoneAccountSearchParams,
+  ): Promise<PhoneAccount> {
     return AccountReader.getAccountByPhone(params);
+  }
+
+  public static async checkPhoneNumberNotExists(
+    phoneNumber: string,
+  ): Promise<void> {
+    return AccountReader.checkPhoneNumberNotExists(phoneNumber);
   }
 }

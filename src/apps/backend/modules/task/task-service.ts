@@ -8,10 +8,11 @@ import {
   GetTaskByNameParams,
   Task,
   EditInfoParams,
+  UserInfo,
 } from './types';
 
 export default class TaskService {
-  public static async editInfo(params: EditInfoParams) {
+  public static async editInfo(params: EditInfoParams): Promise<UserInfo> {
     return TaskWriter.editInfo(params);
   }
 

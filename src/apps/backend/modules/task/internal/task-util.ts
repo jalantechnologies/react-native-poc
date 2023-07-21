@@ -6,7 +6,7 @@ import DataURIParser from 'datauri/parser';
 import path from 'path';
 
 export default class TaskUtil {
-  public static convertEditInfoDBToInfo(infoDb: UserInfoDB) {
+  public static convertEditInfoDBToInfo(infoDb: UserInfoDB): UserInfo {
     const info = new UserInfo();
     info.id = infoDb._id.toString();
     info.account = infoDb.account.toString();
@@ -25,7 +25,9 @@ export default class TaskUtil {
     return task;
   }
 
-  public static async getDataUri(file: Express.Multer.File): Promise<DataURIParser> {
+  public static async getDataUri(
+    file: Express.Multer.File,
+  ): Promise<DataURIParser> {
     const parser = new DataURIParser();
     const extName = path.extname(file.originalname).toString();
     return parser.format(extName, file.buffer);

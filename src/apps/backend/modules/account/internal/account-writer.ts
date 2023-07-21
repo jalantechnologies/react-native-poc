@@ -1,5 +1,5 @@
 /* eslint-disable no-useless-catch */
-import { Account, CreateAccountParams } from '../types';
+import { Account, CreateAccountParams, PhoneAccount } from '../types';
 
 import AccountReader from './account-reader';
 import AccountUtil from './account-util';
@@ -19,7 +19,7 @@ export default class AccountWriter {
     return AccountUtil.convertAccountDBToAccount(dbAccount);
   }
 
-  public static async createAccountWithPhoneNumber(phoneNumber:string) {
+  public static async createAccountWithPhoneNumber(phoneNumber:string): Promise<PhoneAccount> {
     await AccountReader.checkPhoneNumberNotExists(phoneNumber);
     // got the phone number and make entry to monogo
     const dbAccount = await AccountRepository.phoneAccountDB.create({
