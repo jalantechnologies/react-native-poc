@@ -7,10 +7,11 @@ import {
   GetTaskParams,
   GetTaskByNameParams,
   Task,
+  EditInfoParams,
 } from './types';
 
 export default class TaskService {
-  public static async editInfo(params){
+  public static async editInfo(params: EditInfoParams) {
     return TaskWriter.editInfo(params);
   }
 
@@ -26,11 +27,15 @@ export default class TaskService {
     return TaskReader.getTaskForAccount(params);
   }
 
-  public static async getTaskByNameForAccount(params: GetTaskByNameParams): Promise<Task> {
+  public static async getTaskByNameForAccount(
+    params: GetTaskByNameParams,
+  ): Promise<Task> {
     return TaskReader.getTaskByNameForAccount(params);
   }
 
-  public static async getTasksForAccount(params: GetAllTaskParams): Promise<Task[]> {
+  public static async getTasksForAccount(
+    params: GetAllTaskParams,
+  ): Promise<Task[]> {
     return TaskReader.getTasksForAccount(params);
   }
 }

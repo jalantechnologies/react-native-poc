@@ -25,7 +25,7 @@ export default class TaskUtil {
     return task;
   }
 
-  public static async getDataUri(file) {
+  public static async getDataUri(file: Express.Multer.File): Promise<DataURIParser> {
     const parser = new DataURIParser();
     const extName = path.extname(file.originalname).toString();
     return parser.format(extName, file.buffer);

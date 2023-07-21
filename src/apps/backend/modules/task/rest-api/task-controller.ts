@@ -7,9 +7,10 @@ import {
   DeleteTaskParams,
   GetTaskParams,
 } from '../types';
-import cloudinary from 'cloudinary';
+import cloudinary, { UploadApiResponse } from 'cloudinary';
 import ConfigService from '../../config/config-service';
 import TaskUtil from '../internal/task-util';
+import DataURIParser from 'datauri/parser';
 
 cloudinary.v2.config({
   cloud_name: ConfigService.getStringValue('cloudinary.verify.cloud_name'),
@@ -24,9 +25,9 @@ export default class TaskController {
     next: NextFunction,
   ): Promise<void> {
     try {
-      let myCloudinary;
+      let myCloudinary: UploadApiResponse;
       if (req.file) {
-        const fileUri = await TaskUtil.getDataUri(req.file);
+        const fileUri: DataURIParser = await TaskUtil.getDataUri(req.file);
         myCloudinary = await cloudinary.v2.uploader.upload(fileUri.content);
       }
 

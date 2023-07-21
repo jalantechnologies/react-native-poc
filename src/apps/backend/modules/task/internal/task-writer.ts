@@ -1,6 +1,7 @@
 import {
   CreateTaskParams,
   DeleteTaskParams,
+  EditInfoParams,
   GetTaskParams,
   Task,
   TaskWithNameExistsError,
@@ -12,7 +13,7 @@ import TaskReader from './task-reader';
 import TaskUtil from './task-util';
 
 export default class TaskWriter {
-  public static async editInfo(params) {
+  public static async editInfo(params: EditInfoParams) {
     const existingInfo = await TaskRepository.userInfoDB.findOne({
       account: params.accountId,
       email: params.email,

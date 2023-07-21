@@ -34,6 +34,14 @@ export type GetTaskByNameParams = {
   name: string;
 };
 
+export type EditInfoParams = {
+  accountId: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  profile_img: string | null;
+};
+
 export type CreateTaskParams = {
   accountId: string;
   name: string;
