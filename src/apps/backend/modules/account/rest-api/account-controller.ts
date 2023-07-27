@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 
 import AccountService from '../account-service';
-import { Account, CreateAccountParams } from '../types';
+import { Account, CreateAccountParams, PhoneAccount } from '../types';
 import SMSService from '../../communication/sms-service';
 
 export default class AccountController {
@@ -30,7 +30,9 @@ export default class AccountController {
       const { phoneNumber } = req.body;
       await AccountService.checkPhoneNumberNotExists(phoneNumber);
       await SMSService.sendOtp(phoneNumber);
-      res.status(201).send(`otp sent to ${phoneNumber}`);
+      res
+        .status(201)
+        .send(AccountController.serializeSendOtpAsJson(phoneNumber));
     } catch (e) {
       next(e);
     }
@@ -47,14 +49,34 @@ export default class AccountController {
       const response = await SMSService.verifyOtp(params);
 
       if (response.status === 'approved') {
-        await AccountService.createAccountWithPhoneNumber(phoneNumber);
-        res.status(201).send(`verified successfully ${phoneNumber}`);
+        const phoneAccount = await AccountService.createAccountWithPhoneNumber(
+          phoneNumber,
+        );
+        res
+          .status(201)
+          .send(AccountController.serializePhoneAccountAsJSON(phoneAccount));
       } else {
         res.status(422).send(`Incorrect otp try again`);
       }
     } catch (e) {
       next(e);
     }
+  }
+
+  private static serializePhoneAccountAsJSON(
+    PhoneAccount: PhoneAccount,
+  ): unknown {
+    return {
+      id: PhoneAccount.id,
+      number: PhoneAccount.phoneNumber,
+      message: `Account created successfully`,
+    };
+  }
+
+  private static serializeSendOtpAsJson(phoneNumber: string): unknown {
+    return {
+      message: `message has been sent to ${phoneNumber}`,
+    };
   }
 
   private static serializeAccountAsJSON(account: Account): unknown {

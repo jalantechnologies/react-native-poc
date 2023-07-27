@@ -37,7 +37,9 @@ export default class AccessTokenController {
       const params: PhoneAccountSearchParams = { phoneNumber };
       await AccountService.getAccountByPhone(params);
       await SMSService.sendOtp(phoneNumber);
-      res.status(201).send(`otp sent to ${phoneNumber}`);
+      res
+        .status(201)
+        .send(AccessTokenController.serializeSendOtpAsJson(phoneNumber));
     } catch (e) {
       next(e);
     }
@@ -54,7 +56,9 @@ export default class AccessTokenController {
       const response = await SMSService.verifyOtp(params);
 
       if (response.status === 'approved') {
-        res.status(201).send(`verified successfully ${phoneNumber}`);
+        res
+          .status(201)
+          .send(AccessTokenController.serializePhoneAccountAsJSON(phoneNumber));
       } else {
         res.status(422).send(`Incorrect otp try again`);
       }
@@ -79,6 +83,20 @@ export default class AccessTokenController {
     } catch (e) {
       next(e);
     }
+  }
+
+  private static serializePhoneAccountAsJSON(phoneNumber: string): unknown {
+    return {
+      number: phoneNumber,
+      message: `Account verified successfully`,
+    };
+  }
+
+  private static serializeSendOtpAsJson(phoneNumber: string): unknown {
+    return {
+      number: phoneNumber,
+      message: `message has been sent to ${phoneNumber}`,
+    };
   }
 
   private static serializeAccessTokenAsJSON(accessToken: AccessToken): unknown {
