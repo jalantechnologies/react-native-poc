@@ -9,18 +9,18 @@ rollbar:
 jwt:
   token: 'JWT_TOKEN'
 
-# twilio:
-#   verify:
-#     accountSid: 'TWILIO_ACCOUNT_SID'
-#     authToken: 'TWILIO_AUTH_TOKEN'
-#     verifySid: 'TWILIO_VERIFY_SID'
-#   messaging:
-#     messagingServiceSid: 'TWILIO_MESSAGING_SERVICE_SID'
-
 twilio:
-  accountSid: 'TWILIO_ACCOUNT_SID'
-  authToken: 'TWILIO_AUTH_TOKEN'
-  verifySid: 'TWILIO_VERIFY_SID'
+  verify:
+    accountSid: 'TWILIO_ACCOUNT_SID'
+    authToken: 'TWILIO_AUTH_TOKEN'
+    verifySid: 'TWILIO_VERIFY_SID'
+  messaging:
+    messagingServiceSid: 'TWILIO_MESSAGING_SERVICE_SID'
+
+# twilio:
+#   accountSid: 'TWILIO_ACCOUNT_SID'
+#   authToken: 'TWILIO_AUTH_TOKEN'
+#   verifySid: 'TWILIO_VERIFY_SID'
 
 cloudinary:
   verify:

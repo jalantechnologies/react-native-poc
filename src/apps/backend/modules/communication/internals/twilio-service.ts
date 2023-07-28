@@ -18,8 +18,8 @@ export default class TwilioService {
 
   public static initializeService(): void {
     this.twilio = new Twilio(
-      ConfigService.getStringValue('twilio.accountSid'),
-      ConfigService.getStringValue('twilio.authToken'),
+      ConfigService.getStringValue('twilio.verify.accountSid'),
+      ConfigService.getStringValue('twilio.verify.authToken'),
     );
   }
 
@@ -52,7 +52,7 @@ export default class TwilioService {
   ): Promise<VerificationInstance> {
     try {
       return await this.twilio.verify.v2
-        .services(ConfigService.getStringValue('twilio.verifySid'))
+        .services(ConfigService.getStringValue('twilio.verify.verifySid'))
         .verifications.create({ to: phoneNumber, channel: 'sms' });
     } catch (e) {
       Logger.error(e.message);
@@ -66,7 +66,7 @@ export default class TwilioService {
     const { phoneNumber, otp } = params;
     try {
       const response = await this.twilio.verify.v2
-        .services(ConfigService.getStringValue('twilio.verifySid'))
+        .services(ConfigService.getStringValue('twilio.verify.verifySid'))
         .verificationChecks.create({
           to: phoneNumber,
           code: otp,
