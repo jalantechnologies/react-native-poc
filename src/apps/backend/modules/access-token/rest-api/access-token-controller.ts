@@ -62,6 +62,7 @@ export default class AccessTokenController {
       } else {
         res.status(422).send({
           message: `Incorrect otp try again`,
+          success: false,
         });
       }
     } catch (e) {
@@ -91,6 +92,7 @@ export default class AccessTokenController {
     return {
       number: phoneNumber,
       message: `Account verified successfully`,
+      success: true,
     };
   }
 
@@ -98,6 +100,7 @@ export default class AccessTokenController {
     return {
       number: phoneNumber,
       message: `message has been sent to ${phoneNumber}`,
+      success: true,
     };
   }
 

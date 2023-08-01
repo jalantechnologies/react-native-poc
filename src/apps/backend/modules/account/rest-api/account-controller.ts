@@ -58,6 +58,7 @@ export default class AccountController {
       } else {
         res.status(422).send({
           message: `Incorrect otp try again`,
+          success: false,
         });
       }
     } catch (e) {
@@ -72,12 +73,14 @@ export default class AccountController {
       id: PhoneAccount.id,
       number: PhoneAccount.phoneNumber,
       message: `Account created successfully`,
+      success: true,
     };
   }
 
   private static serializeSendOtpAsJson(phoneNumber: string): unknown {
     return {
       message: `message has been sent to ${phoneNumber}`,
+      success: true,
     };
   }
 
@@ -85,6 +88,7 @@ export default class AccountController {
     return {
       id: account.id,
       username: account.username,
+      success: true,
     };
   }
 }
