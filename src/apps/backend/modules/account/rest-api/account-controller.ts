@@ -56,7 +56,9 @@ export default class AccountController {
           .status(201)
           .send(AccountController.serializePhoneAccountAsJSON(phoneAccount));
       } else {
-        res.status(422).send(`Incorrect otp try again`);
+        res.status(422).send({
+          message: `Incorrect otp try again`,
+        });
       }
     } catch (e) {
       next(e);

@@ -60,7 +60,9 @@ export default class AccessTokenController {
           .status(201)
           .send(AccessTokenController.serializePhoneAccountAsJSON(phoneNumber));
       } else {
-        res.status(422).send(`Incorrect otp try again`);
+        res.status(422).send({
+          message: `Incorrect otp try again`,
+        });
       }
     } catch (e) {
       next(e);
