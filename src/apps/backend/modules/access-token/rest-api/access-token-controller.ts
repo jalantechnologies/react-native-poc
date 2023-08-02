@@ -91,7 +91,7 @@ export default class AccessTokenController {
   private static serializePhoneAccountAsJSON(phoneNumber: string): unknown {
     return {
       number: phoneNumber,
-      message: `Account verified successfully`,
+      message: `OTP verified successfully`,
       success: true,
     };
   }

@@ -40,7 +40,10 @@ export default class TaskController {
       };
 
       await TaskService.editInfo(params);
-      res.status(201).send(`user info added successfully`);
+      res.status(201).send({
+        message: `Profile updated successfully`,
+        success: true,
+      });
     } catch (e) {
       next(e);
     }
