@@ -12,7 +12,6 @@ export class UserInfo {
 
 export class PhoneAccountDetails {
   id: string;
-  phoneNumber: string;
   first_name: string;
   last_name: string;
   email: string;
@@ -36,6 +35,10 @@ export type GetAllTaskParams = {
 export type GetTaskParams = {
   accountId: string;
   taskId: string;
+};
+
+export type GetAccountDetailsParams = {
+  account_id: string;
 };
 
 export type GetTaskByNameParams = {

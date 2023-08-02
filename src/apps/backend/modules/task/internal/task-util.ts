@@ -18,10 +18,11 @@ export default class TaskUtil {
     return info;
   }
 
-  public static convertPhoneAccountDetails(dbAccountDetails) {
+  public static convertPhoneAccountDetails(
+    dbAccountDetails: UserInfoDB,
+  ): PhoneAccountDetails {
     const accountDetails = new PhoneAccountDetails();
     accountDetails.id = dbAccountDetails._id.toString();
-    accountDetails.phoneNumber = dbAccountDetails.phoneNumber;
     accountDetails.first_name = dbAccountDetails.first_name;
     accountDetails.last_name = dbAccountDetails.last_name;
     accountDetails.email = dbAccountDetails.email;

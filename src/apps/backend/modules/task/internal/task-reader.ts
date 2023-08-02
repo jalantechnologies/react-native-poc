@@ -7,6 +7,8 @@ import {
   GetTaskByNameParams,
   TaskWithNameNotFoundError,
   AccountDetailsWithPhoneNumberExistsError,
+  GetAccountDetailsParams,
+  PhoneAccountDetails,
 } from '../types';
 
 import TaskRepository from './store/task-repository';
@@ -25,7 +27,9 @@ export default class TaskReader {
     return TaskUtil.convertTaskDBToTask(task);
   }
 
-  public static async getPhoneAccountDetails(params) {
+  public static async getPhoneAccountDetails(
+    params: GetAccountDetailsParams,
+  ): Promise<PhoneAccountDetails> {
     console.log(params.account_id);
     const dbAccountDetails = await TaskRepository.userInfoDB.findOne({
       account: params.account_id,

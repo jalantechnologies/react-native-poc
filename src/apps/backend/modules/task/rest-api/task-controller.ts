@@ -6,6 +6,8 @@ import {
   GetAllTaskParams,
   DeleteTaskParams,
   GetTaskParams,
+  PhoneAccountDetails,
+  GetAccountDetailsParams,
 } from '../types';
 import cloudinary, { UploadApiResponse } from 'cloudinary';
 import ConfigService from '../../config/config-service';
@@ -44,6 +46,22 @@ export default class TaskController {
         message: `Profile updated successfully`,
         success: true,
       });
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  public static async getUserInfo(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> {
+    try {
+      const params: GetAccountDetailsParams = {
+        account_id: req.query.account_id as string,
+      };
+      const accountDetails = await TaskService.getPhoneAccountDetails(params);
+      res.status(200).send(TaskController.serializeInfoAsJSON(accountDetails));
     } catch (e) {
       next(e);
     }
@@ -105,26 +123,6 @@ export default class TaskController {
     }
   }
 
-  public static async getUserInfo(
-    req: Request,
-    res: Response,
-    next: NextFunction,
-  ): Promise<void> {
-    try {
-      const params = {
-        account_id: req.query.account_id,
-      };
-      //  res.send({msg: "ok"})
-      // const { account } = req.body;
-      // console.log(account);
-      const accountDetails = await TaskService.getPhoneAccountDetails(params);
-      console.log(accountDetails);
-      res.status(200).send(accountDetails);
-    } catch (e) {
-      next(e);
-    }
-  }
-
   public static async getTask(
     req: Request,
     res: Response,
@@ -140,6 +138,18 @@ export default class TaskController {
     } catch (e) {
       next(e);
     }
+  }
+
+  private static serializeInfoAsJSON(
+    accountDetails: PhoneAccountDetails,
+  ): unknown {
+    return {
+      id: accountDetails.id,
+      first_name: accountDetails.first_name,
+      last_name: accountDetails.last_name,
+      email: accountDetails.email,
+      profile_img: accountDetails.profile_img,
+    };
   }
 
   private static serializeTaskAsJSON(task: Task): unknown {

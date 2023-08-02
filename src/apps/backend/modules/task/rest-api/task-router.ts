@@ -9,7 +9,6 @@ export default class TaskRouter {
     const router = Router({ mergeParams: true });
 
     router.get('/account-info',AccountAuthMiddleware.ensureAccess, TaskController.getUserInfo );
-
     router.post('/', AccountAuthMiddleware.ensureAccess, TaskController.createTask);
     router.get('/', AccountAuthMiddleware.ensureAccess, TaskController.getAllTasks);
     router.get('/:id', AccountAuthMiddleware.ensureAccess, TaskController.getTask);

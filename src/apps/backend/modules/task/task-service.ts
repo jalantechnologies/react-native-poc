@@ -9,6 +9,8 @@ import {
   Task,
   EditInfoParams,
   UserInfo,
+  GetAccountDetailsParams,
+  PhoneAccountDetails,
 } from './types';
 
 export default class TaskService {
@@ -34,7 +36,9 @@ export default class TaskService {
     return TaskReader.getTaskByNameForAccount(params);
   }
 
-  public static async getPhoneAccountDetails(params) {
+  public static async getPhoneAccountDetails(
+    params: GetAccountDetailsParams,
+  ): Promise<PhoneAccountDetails> {
     return TaskReader.getPhoneAccountDetails(params);
   }
 
