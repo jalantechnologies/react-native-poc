@@ -105,6 +105,26 @@ export default class TaskController {
     }
   }
 
+  public static async getUserInfo(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> {
+    try {
+      const params = {
+        account_id: req.query.account_id,
+      };
+      //  res.send({msg: "ok"})
+      // const { account } = req.body;
+      // console.log(account);
+      const accountDetails = await TaskService.getPhoneAccountDetails(params);
+      console.log(accountDetails);
+      res.status(200).send(accountDetails);
+    } catch (e) {
+      next(e);
+    }
+  }
+
   public static async getTask(
     req: Request,
     res: Response,

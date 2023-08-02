@@ -10,6 +10,15 @@ export class UserInfo {
   profile_img: string | null;
 }
 
+export class PhoneAccountDetails {
+  id: string;
+  phoneNumber: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  profile_img: string | null;
+}
+
 export class Task {
   id: string;
 
@@ -89,6 +98,16 @@ export class TaskNotFoundError extends AppError {
 
   constructor(taskId: string) {
     super(`Task with taskId ${taskId} not found.`);
+    this.code = TaskErrorCode.NOT_FOUND;
+    this.httpStatusCode = 404;
+  }
+}
+
+export class AccountDetailsWithPhoneNumberExistsError extends AppError {
+  code: TaskErrorCode;
+
+  constructor(account_id: string) {
+    super(`Account details ${account_id} not exist`);
     this.code = TaskErrorCode.NOT_FOUND;
     this.httpStatusCode = 404;
   }

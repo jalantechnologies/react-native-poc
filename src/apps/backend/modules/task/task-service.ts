@@ -34,6 +34,10 @@ export default class TaskService {
     return TaskReader.getTaskByNameForAccount(params);
   }
 
+  public static async getPhoneAccountDetails(params) {
+    return TaskReader.getPhoneAccountDetails(params);
+  }
+
   public static async getTasksForAccount(
     params: GetAllTaskParams,
   ): Promise<Task[]> {

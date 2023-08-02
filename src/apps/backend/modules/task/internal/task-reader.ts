@@ -6,6 +6,7 @@ import {
   PaginationParams,
   GetTaskByNameParams,
   TaskWithNameNotFoundError,
+  AccountDetailsWithPhoneNumberExistsError,
 } from '../types';
 
 import TaskRepository from './store/task-repository';
@@ -24,7 +25,22 @@ export default class TaskReader {
     return TaskUtil.convertTaskDBToTask(task);
   }
 
-  public static async getTaskByNameForAccount(params: GetTaskByNameParams): Promise<Task> {
+  public static async getPhoneAccountDetails(params) {
+    console.log(params.account_id);
+    const dbAccountDetails = await TaskRepository.userInfoDB.findOne({
+      account: params.account_id,
+    });
+
+    if (!dbAccountDetails) {
+      throw new AccountDetailsWithPhoneNumberExistsError(params.account_id);
+    }
+
+    return TaskUtil.convertPhoneAccountDetails(dbAccountDetails);
+  }
+
+  public static async getTaskByNameForAccount(
+    params: GetTaskByNameParams,
+  ): Promise<Task> {
     const task = await TaskRepository.taskDB.findOne({
       account: params.accountId,
       name: params.name,
@@ -36,17 +52,18 @@ export default class TaskReader {
     return TaskUtil.convertTaskDBToTask(task);
   }
 
-  public static async getTasksForAccount(params: GetAllTaskParams): Promise<Task []> {
-    const totalTasksCount = await TaskRepository.taskDB
-      .countDocuments({
-        account: params.accountId,
-        active: true,
-      });
+  public static async getTasksForAccount(
+    params: GetAllTaskParams,
+  ): Promise<Task[]> {
+    const totalTasksCount = await TaskRepository.taskDB.countDocuments({
+      account: params.accountId,
+      active: true,
+    });
     const paginationParams: PaginationParams = {
-      page: (params.page) ? (params.page) : 1,
-      size: (params.size) ? (params.size) : totalTasksCount,
+      page: params.page ? params.page : 1,
+      size: params.size ? params.size : totalTasksCount,
     };
-    const startIndex = (paginationParams.page - 1) * (paginationParams.size);
+    const startIndex = (paginationParams.page - 1) * paginationParams.size;
     const tasks = await TaskRepository.taskDB
       .find({ account: params.accountId, active: true })
       .limit(paginationParams.size)

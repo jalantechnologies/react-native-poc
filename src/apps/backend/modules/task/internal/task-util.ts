@@ -1,4 +1,4 @@
-import { Task, UserInfo } from '../types';
+import { PhoneAccountDetails, Task, UserInfo } from '../types';
 
 import { TaskDB, UserInfoDB } from './store/task-db';
 
@@ -17,6 +17,19 @@ export default class TaskUtil {
 
     return info;
   }
+
+  public static convertPhoneAccountDetails(dbAccountDetails) {
+    const accountDetails = new PhoneAccountDetails();
+    accountDetails.id = dbAccountDetails._id.toString();
+    accountDetails.phoneNumber = dbAccountDetails.phoneNumber;
+    accountDetails.first_name = dbAccountDetails.first_name;
+    accountDetails.last_name = dbAccountDetails.last_name;
+    accountDetails.email = dbAccountDetails.email;
+    accountDetails.profile_img = dbAccountDetails.profile_img;
+
+    return accountDetails;
+  }
+
   public static convertTaskDBToTask(taskDb: TaskDB): Task {
     const task = new Task();
     task.id = taskDb._id.toString();
