@@ -50,15 +50,19 @@ export default class App {
     // from webpack dev server
     if (isDevEnv) {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-      app.use(cors({
-        origin: 'http://localhost:3000',
-      }));
+      app.use(
+        cors({
+          origin: 'http://localhost:3000',
+        }),
+      );
     }
 
-    const accountServiceRESTApi = await AccountServiceManager.createRestAPIServer();
+    const accountServiceRESTApi =
+      await AccountServiceManager.createRestAPIServer();
     app.use('/', accountServiceRESTApi);
 
-    const accessTokenServiceRESTApi = await AccessTokenServiceManager.createRestAPIServer();
+    const accessTokenServiceRESTApi =
+      await AccessTokenServiceManager.createRestAPIServer();
     app.use('/', accessTokenServiceRESTApi);
 
     const taskServiceRESTApi = await TaskServiceManager.createRestAPIServer();
@@ -83,12 +87,10 @@ export default class App {
 
   private static getRequestLogger(): express.Handler {
     return expressWinston.logger({
-      transports: [
-        LoggerManager.getWinstonTransport(),
-      ],
+      transports: [LoggerManager.getWinstonTransport()],
       // no pre-build meta
       meta: false,
-      msg: 'www - request - {{req.ip}} - {{res.statusCode}} - {{req.method}} - {{res.responseTime}}ms - {{req.url}} - {{req.headers[\'user-agent\']}}',
+      msg: "www - request - {{req.ip}} - {{res.statusCode}} - {{req.method}} - {{res.responseTime}}ms - {{req.url}} - {{req.headers['user-agent']}}",
       // use the default express/morgan request formatting
       // enabling this will override any msg if true
       expressFormat: false,
@@ -101,9 +103,7 @@ export default class App {
 
   private static getErrorLogger(): express.ErrorRequestHandler {
     return expressWinston.errorLogger({
-      transports: [
-        LoggerManager.getWinstonTransport(),
-      ],
+      transports: [LoggerManager.getWinstonTransport()],
     });
   }
 }

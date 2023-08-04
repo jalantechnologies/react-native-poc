@@ -14,6 +14,14 @@ export type CreateAccessTokenParams = {
   password: string;
 };
 
+export type CreatePhoneAccessTokenParams = {
+  phoneNumber: string;
+};
+
+export type PhoneAccountSearchParams = {
+  phoneNumber: string;
+};
+
 export enum AccessTokenErrorCode {
   UNAUTHORIZED_ACCESS = 'ACCESS_TOKEN_ERR_01',
   ACCESS_TOKEN_EXPIRED = 'ACCESS_TOKEN_ERR_02',

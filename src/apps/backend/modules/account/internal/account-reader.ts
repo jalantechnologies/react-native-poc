@@ -2,8 +2,12 @@ import {
   Account,
   AccountNotFoundError,
   AccountSearchParams,
+  AccountWithPhoneNumberExistsError,
   AccountWithUserNameExistsError,
   InvalidCredentialsError,
+  PhoneAccount,
+  PhoneAccountNotFoundError,
+  PhoneAccountSearchParams,
 } from '../types';
 
 import AccountUtil from './account-util';
@@ -20,6 +24,22 @@ export default class AccountReader {
       throw new AccountNotFoundError(username);
     }
     return AccountUtil.convertAccountDBToAccount(dbAccount);
+  }
+
+  public static async getAccountByPhone(
+    params: PhoneAccountSearchParams,
+  ): Promise<PhoneAccount> {
+    const { phoneNumber } = params;
+    const dbAccount = await AccountRepository.phoneAccountDB.findOne({
+      phoneNumber,
+      active: true,
+    });
+
+    if (!dbAccount) {
+      throw new PhoneAccountNotFoundError(phoneNumber);
+    }
+
+    return AccountUtil.convertPhoneAccountDBToAccount(dbAccount);
   }
 
   public static async getAccountByUsernamePassword(
@@ -46,6 +66,19 @@ export default class AccountReader {
     });
     if (dbAccount) {
       throw new AccountWithUserNameExistsError(params.username);
+    }
+  }
+
+  public static async checkPhoneNumberNotExists(
+    phoneNumber: string,
+  ): Promise<void> {
+    const dbAccount = await AccountRepository.phoneAccountDB.findOne({
+      phoneNumber: phoneNumber,
+      active: true,
+    });
+
+    if (dbAccount) {
+      throw new AccountWithPhoneNumberExistsError(phoneNumber);
     }
   }
 }

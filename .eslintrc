@@ -5,14 +5,10 @@
     "es6": true,
     "node": true
   },
-  "plugins": [
-    "cypress"
-  ],
+  "plugins": ["cypress", "baseui"],
   "overrides": [
     {
-      "files": [
-        ".js"
-      ],
+      "files": [".js"],
       "extends": [
         "airbnb-base",
         "plugin:eslint-comments/recommended",
@@ -36,14 +32,14 @@
           }
         ],
         "eslint-comments/disable-enable-pair": "off",
-        "no-underscore-dangle": "off"
+        "no-underscore-dangle": "off",
+        "baseui/deprecated-theme-api": "warn",
+        "baseui/deprecated-component-api": "warn",
+        "baseui/no-deep-imports": "warn"
       }
     },
     {
-      "files": [
-        "*.ts",
-        "*.tsx"
-      ],
+      "files": ["*.ts", "*.tsx"],
       "extends": [
         "airbnb-base",
         "plugin:eslint-comments/recommended",
@@ -116,5 +112,8 @@
         "project": "./cypress/tsconfig.json"
       }
     }
-  ]
+  ],
+  "[typescript]": {
+    "files.eol": "\r\n"
+  }
 }

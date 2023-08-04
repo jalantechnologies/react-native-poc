@@ -1,9 +1,12 @@
 import {
   CreateTaskParams,
   DeleteTaskParams,
+  EditInfoParams,
   GetTaskParams,
   Task,
   TaskWithNameExistsError,
+  TaskWithUserNameExistsError,
+  UserInfo,
 } from '../types';
 
 import TaskRepository from './store/task-repository';
@@ -11,6 +14,29 @@ import TaskReader from './task-reader';
 import TaskUtil from './task-util';
 
 export default class TaskWriter {
+  public static async editInfo(params: EditInfoParams): Promise<UserInfo> {
+    const existingInfo = await TaskRepository.userInfoDB.findOne({
+      account: params.accountId,
+      email: params.email,
+      active: true,
+    });
+
+    if (existingInfo) {
+      throw new TaskWithUserNameExistsError(params.email);
+    }
+
+    const editedInfo = await TaskRepository.userInfoDB.create({
+      account: params.accountId,
+      first_name: params.first_name,
+      last_name: params.last_name,
+      email: params.email,
+      active: true,
+      profile_img: params.profile_img,
+    });
+
+    return TaskUtil.convertEditInfoDBToInfo(editedInfo);
+  }
+
   public static async createTask(params: CreateTaskParams): Promise<Task> {
     const existingTask = await TaskRepository.taskDB.findOne({
       account: params.accountId,

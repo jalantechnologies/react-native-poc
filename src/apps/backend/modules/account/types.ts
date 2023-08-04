@@ -9,14 +9,32 @@ export class Account {
   hashedPassword: string;
 }
 
+export class PhoneAccount {
+  id: string;
+  phoneNumber: string;
+}
+
 export type CreateAccountParams = {
   username: string;
   password: string;
 };
 
+export type PhoneNumber = {
+  phoneNumber: string;
+};
+
+export type CreatephoneOtpParams = {
+  phoneNumber: PhoneNumber;
+  otp: number;
+};
+
 export type AccountSearchParams = {
   username: string;
   password: string;
+};
+
+export type PhoneAccountSearchParams = {
+  phoneNumber: string;
 };
 
 export enum AccountErrorCode {
@@ -35,11 +53,31 @@ export class AccountWithUserNameExistsError extends AppError {
   }
 }
 
+export class AccountWithPhoneNumberExistsError extends AppError {
+  code: AccountErrorCode;
+
+  constructor(phoneNumber: string) {
+    super(`An account with phone number ${phoneNumber} already exists`);
+    this.code = AccountErrorCode.USERNAME_ALREADY_EXISTS;
+    this.httpStatusCode = 409;
+  }
+}
+
 export class AccountNotFoundError extends AppError {
   code: AccountErrorCode;
 
   constructor(username: string) {
     super(`${username} not found with provided parameters.`);
+    this.code = AccountErrorCode.NOT_FOUND;
+    this.httpStatusCode = 404;
+  }
+}
+
+export class PhoneAccountNotFoundError extends AppError {
+  code: AccountErrorCode;
+
+  constructor(phoneNumber: string) {
+    super(`${phoneNumber} number not found.`);
     this.code = AccountErrorCode.NOT_FOUND;
     this.httpStatusCode = 404;
   }

@@ -1,7 +1,4 @@
-import {
-  NextFunction, Request, Response,
-} from 'express';
-
+import { NextFunction, Request, Response } from 'express';
 import TaskService from '../task-service';
 import {
   Task,
@@ -9,9 +6,67 @@ import {
   GetAllTaskParams,
   DeleteTaskParams,
   GetTaskParams,
+  PhoneAccountDetails,
+  GetAccountDetailsParams,
 } from '../types';
+import cloudinary, { UploadApiResponse } from 'cloudinary';
+import ConfigService from '../../config/config-service';
+import TaskUtil from '../internal/task-util';
+import DataURIParser from 'datauri/parser';
+
+cloudinary.v2.config({
+  cloud_name: ConfigService.getStringValue('cloudinary.verify.cloud_name'),
+  api_key: ConfigService.getStringValue('cloudinary.verify.api_key'),
+  api_secret: ConfigService.getStringValue('cloudinary.verify.api_secret'),
+});
 
 export default class TaskController {
+  public static async editInfo(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> {
+    try {
+      let myCloudinary: UploadApiResponse;
+      if (req.file) {
+        const fileUri: DataURIParser = await TaskUtil.getDataUri(req.file);
+        myCloudinary = await cloudinary.v2.uploader.upload(fileUri.content);
+      }
+
+      const params = {
+        accountId: req.params.accountId,
+        first_name: req.body.first_name,
+        last_name: req.body.last_name,
+        email: req.body.email,
+        profile_img: myCloudinary?.secure_url || null,
+      };
+
+      await TaskService.editInfo(params);
+      res.status(201).send({
+        message: `Profile updated successfully`,
+        success: true,
+      });
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  public static async getUserInfo(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> {
+    try {
+      const params: GetAccountDetailsParams = {
+        account_id: req.query.account_id as string,
+      };
+      const accountDetails = await TaskService.getPhoneAccountDetails(params);
+      res.status(200).send(TaskController.serializeInfoAsJSON(accountDetails));
+    } catch (e) {
+      next(e);
+    }
+  }
+
   public static async createTask(
     req: Request,
     res: Response,
@@ -50,7 +105,7 @@ export default class TaskController {
     req: Request,
     res: Response,
     next: NextFunction,
-  ): Promise <void> {
+  ): Promise<void> {
     try {
       const page = +req.query.page;
       const size = +req.query.size;
@@ -60,7 +115,9 @@ export default class TaskController {
         size,
       };
       const tasks = await TaskService.getTasksForAccount(params);
-      res.status(200).send(tasks.map((task) => TaskController.serializeTaskAsJSON(task)));
+      res
+        .status(200)
+        .send(tasks.map((task) => TaskController.serializeTaskAsJSON(task)));
     } catch (e) {
       next(e);
     }
@@ -81,6 +138,18 @@ export default class TaskController {
     } catch (e) {
       next(e);
     }
+  }
+
+  private static serializeInfoAsJSON(
+    accountDetails: PhoneAccountDetails,
+  ): unknown {
+    return {
+      id: accountDetails.id,
+      first_name: accountDetails.first_name,
+      last_name: accountDetails.last_name,
+      email: accountDetails.email,
+      profile_img: accountDetails.profile_img,
+    };
   }
 
   private static serializeTaskAsJSON(task: Task): unknown {

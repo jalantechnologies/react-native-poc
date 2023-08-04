@@ -41,6 +41,11 @@ export type SendSMSParams = {
   messageBody: string;
 };
 
+export type PhoneOtpParams = {
+  phoneNumber: string;
+  otp: string;
+};
+
 export enum CommunicationErrorCode {
   VALIDATION_ERROR = 'COMMUNICATION_ERR_01',
   THIRD_PARTY_ERROR = 'COMMUNICATION_ERR_02',

@@ -8,6 +8,18 @@ export default class AccessTokenRouter {
     const router = Router();
 
     router.post('/', AccessTokenController.createAccessToken);
+    
+    router.post('/phoneLogin', AccessTokenController.loginWithPhoneNumber);
+
+    router.post(
+      '/phoneLoginVerify',
+      AccessTokenController.verifyWithPhoneNumber,
+    );
+
+    router.post(
+      '/phoneLoginToken',
+      AccessTokenController.createPhoneAccessToken,
+    );
 
     return router;
   }

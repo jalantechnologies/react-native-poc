@@ -1,6 +1,23 @@
 // eslint-disable-next-line max-classes-per-file
 import AppError from '../error/app-error';
 
+export class UserInfo {
+  id: string;
+  account: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  profile_img: string | null;
+}
+
+export class PhoneAccountDetails {
+  id: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  profile_img: string | null;
+}
+
 export class Task {
   id: string;
 
@@ -20,9 +37,21 @@ export type GetTaskParams = {
   taskId: string;
 };
 
+export type GetAccountDetailsParams = {
+  account_id: string;
+};
+
 export type GetTaskByNameParams = {
-  accountId: string,
+  accountId: string;
   name: string;
+};
+
+export type EditInfoParams = {
+  accountId: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  profile_img: string | null;
 };
 
 export type CreateTaskParams = {
@@ -44,6 +73,7 @@ export enum TaskErrorCode {
   NOT_FOUND = 'TASK_ERR_01',
   TASK_ALREADY_EXISTS = 'TASK_ERR_02',
   UNAUTHORIZED_TASK_ACCESS = 'TASK_ERR_03',
+  USERNAME_DETAILS_PRESENT = 'TASK_ERR_04',
 }
 
 export class TaskWithNameExistsError extends AppError {
@@ -56,11 +86,31 @@ export class TaskWithNameExistsError extends AppError {
   }
 }
 
+export class TaskWithUserNameExistsError extends AppError {
+  code: TaskErrorCode;
+
+  constructor(email: string) {
+    super(`email ${email} details already exist in the database`);
+    this.code = TaskErrorCode.USERNAME_DETAILS_PRESENT;
+    this.httpStatusCode = 409;
+  }
+}
+
 export class TaskNotFoundError extends AppError {
   code: TaskErrorCode;
 
   constructor(taskId: string) {
     super(`Task with taskId ${taskId} not found.`);
+    this.code = TaskErrorCode.NOT_FOUND;
+    this.httpStatusCode = 404;
+  }
+}
+
+export class AccountDetailsWithPhoneNumberExistsError extends AppError {
+  code: TaskErrorCode;
+
+  constructor(account_id: string) {
+    super(`Account details ${account_id} not exist`);
     this.code = TaskErrorCode.NOT_FOUND;
     this.httpStatusCode = 404;
   }
