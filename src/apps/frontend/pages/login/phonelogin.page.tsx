@@ -4,6 +4,8 @@ import { useFormik } from 'formik';
 import { phoneNumberSchema } from '../../schemas/phone-signup-schema';
 import { FormControl } from 'baseui/form-control';
 import { Input } from 'baseui/input';
+// import LoginImg from '../../../../assets/img/login-img.jpg';
+
 import {
   HeadingMedium,
   HeadingSmall,
@@ -37,7 +39,6 @@ const PhoneLogin = () => {
     initialValues: initialValues,
     validationSchema: phoneNumberSchema,
     onSubmit: (_, action) => {
-   //   console.log('user input values are:- ', values);
       action.resetForm();
       setloginStatus(true);
     },
@@ -45,16 +46,10 @@ const PhoneLogin = () => {
 
   return (
     <Block
-      overrides={{
-        Block: {
-          style: ({ $theme }) => ({
-            display: 'flex',
-            backgroundColor: $theme.colors.accent100,
-            width: '100vw',
-            height: '100vh',
-          }),
-        },
-      }}
+      display={'flex'}
+      backgroundColor={'accent100'}
+      width={'100vw'}
+      height={'100vh'}
     >
       <Block
         maxWidth={'60%'}
@@ -69,21 +64,12 @@ const PhoneLogin = () => {
         }}
       >
         <img
+          alt="login-img"
           src="https://images.unsplash.com/photo-1529539795054-3c162aab037a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80"
           height={'100%'}
-          alt="left-heading-img"
         />
       </Block>
-      <Block
-        overrides={{
-          Block: {
-            style: () => ({
-              marginTop: 'auto ',
-              marginBottom: 'auto',
-            }),
-          },
-        }}
-      >
+      <Block marginTop={'auto'} marginBottom={'auto'}>
         <HeadingMedium marginBottom={'scale200'}>
           Welcome to pinch
         </HeadingMedium>

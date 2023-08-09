@@ -43,25 +43,19 @@ const OtpVerification = () => {
 
   return (
     <Block
-      overrides={{
-        Block: {
-          style: ({ $theme }) => ({
-            display: 'flex',
-            backgroundColor: $theme.colors.accent100,
-            width: '100vw',
-            height: '100vh',
-          }),
-        },
-      }}
+      display={'flex'}
+      backgroundColor={'accent100'}
+      width={'100vw'}
+      height={'100vh'}
     >
       <Block
         maxWidth={'60%'}
         margin={'scale900'}
+        overflow={'hidden'}
         overrides={{
           Block: {
             style: ({ $theme }) => ({
               borderRadius: $theme.sizing.scale400,
-              overflow: 'hidden',
             }),
           },
         }}
@@ -72,16 +66,7 @@ const OtpVerification = () => {
           alt="left-heading-img"
         />
       </Block>
-      <Block
-        overrides={{
-          Block: {
-            style: () => ({
-              marginTop: 'auto ',
-              marginBottom: 'auto',
-            }),
-          },
-        }}
-      >
+      <Block marginTop={'auto'} marginBottom={'auto'}>
         <HeadingMedium marginBottom={'scale200'}>
           Welcome to pinch
         </HeadingMedium>
