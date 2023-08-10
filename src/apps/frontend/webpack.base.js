@@ -29,6 +29,13 @@ module.exports = {
           'style-loader',
           // Translates CSS into CommonJS
           'css-loader',
+          // For resolving urls for assets (eg: /assets/img/asset.png)
+          {
+            loader: 'resolve-url-loader',
+            options: {
+              root: path.resolve(__dirname, '../../../dist'),
+            },
+          },
           // Compiles Sass to CSS
           'sass-loader',
         ],

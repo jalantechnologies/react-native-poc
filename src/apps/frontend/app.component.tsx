@@ -1,13 +1,15 @@
 import React, { useEffect } from 'react';
 import { Route, Routes, BrowserRouter as Router } from 'react-router-dom';
 
-import { Header, Footer } from './components';
+// import { Header, Footer } from './components';
 import { DepsProvider } from './contexts';
-import { About, Login, NotFound } from './pages';
+import { About, Login, NotFound, PhoneLogin } from './pages';
 import { AccessService } from './services';
 import InspectLet from './vendor/inspectlet';
 
 import './app.global.scss';
+import BaseWebProvider from './contexts/base-web.provider';
+import OtpVerification from './pages/login/otp.page';
 
 export default function App(): React.ReactElement {
   useEffect(() => {
@@ -17,19 +19,23 @@ export default function App(): React.ReactElement {
   }, []);
 
   return (
-    <DepsProvider deps={{
-      accessService: new AccessService(),
-    }}>
+    <DepsProvider
+      deps={{
+        accessService: new AccessService(),
+      }}
+    >
       <Router>
-        <div className='container'>
-          <Header />
+        <BaseWebProvider>
+          {/* <Header /> */}
           <Routes>
-            <Route path='/about' element={<About />} />
-            <Route path='/' element={<Login />} />
-            <Route path='*' element={<NotFound />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/" element={<PhoneLogin />} />
+            <Route path="/otp-verification" element={<OtpVerification />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
-          <Footer />
-        </div>
+          {/* <Footer /> */}
+        </BaseWebProvider>
       </Router>
     </DepsProvider>
   );
