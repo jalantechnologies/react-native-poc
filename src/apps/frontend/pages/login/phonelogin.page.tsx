@@ -96,7 +96,7 @@ const PhoneLogin = () => {
         </HeadingXSmall>
         <form onSubmit={formik.handleSubmit}>
           <Block display={'flex'}>
-            <Block width={'scale3200'}>
+            <Block marginRight={'scale200'}>
               <FormControl label={() => 'Country Code'}>
                 <Select
                   options={[
@@ -104,11 +104,6 @@ const PhoneLogin = () => {
                     { label: 'Nepal', id: '+977' },
                   ]}
                   overrides={{
-                    Root: {
-                      style: () => ({
-                        maxWidth: '68%',
-                      }),
-                    },
                     ClearIcon: {
                       props: {
                         overrides: {
