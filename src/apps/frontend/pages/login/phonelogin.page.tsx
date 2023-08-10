@@ -4,11 +4,12 @@ import { useFormik } from 'formik';
 import { phoneNumberSchema } from '../../schemas/phone-signup-schema';
 import { FormControl } from 'baseui/form-control';
 import { Input } from 'baseui/input';
+// declare function require(path: string);
 // import LoginImg from '../../../../assets/img/login-img.jpg';
 
 import {
   HeadingMedium,
-  HeadingSmall,
+  HeadingXSmall,
   ParagraphXSmall,
 } from 'baseui/typography';
 import { Button } from 'baseui/button';
@@ -47,13 +48,20 @@ const PhoneLogin = () => {
   return (
     <Block
       display={'flex'}
+      flexDirection={['column', 'column', 'row']}
+      justifyContent={['flex-start', 'center']}
+      alignItems={['center', 'center', 'normal']}
       backgroundColor={'accent100'}
       width={'100vw'}
       height={'100vh'}
     >
       <Block
-        maxWidth={'60%'}
-        margin={'scale900'}
+        maxWidth={['85%', '80%', '60%']}
+        height={['40vh', '50vh', '90vh']}
+        marginBottom={['scale200', 'scale200', 'scale900']}
+        marginTop={'scale900'}
+        marginRight={['auto', 'scale900']}
+        marginLeft={['auto', 'scale900']}
         overrides={{
           Block: {
             style: ({ $theme }) => ({
@@ -64,18 +72,28 @@ const PhoneLogin = () => {
         }}
       >
         <img
-          alt="login-img"
           src="https://images.unsplash.com/photo-1529539795054-3c162aab037a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80"
+          alt="login-img"
           height={'100%'}
         />
+        {/* <img
+          id="companyLogo"
+          src="/assets/img/logo.jpg"
+          alt="login-img"
+          height={'100%'}
+        /> */}
       </Block>
-      <Block marginTop={'auto'} marginBottom={'auto'}>
-        <HeadingMedium marginBottom={'scale200'}>
+      <Block
+        marginTop={['scale200', 'scale400', 'auto']}
+        marginBottom={['scale200', 'auto']}
+        marginLeft={['scale800', 'none']}
+      >
+        <HeadingMedium marginBottom={['scale200']}>
           Welcome to pinch
         </HeadingMedium>
-        <HeadingSmall marginBottom={'scale800'}>
+        <HeadingXSmall marginBottom={['scale200', 'scale400', 'scale800']}>
           Please enter your phone number
-        </HeadingSmall>
+        </HeadingXSmall>
         <form onSubmit={formik.handleSubmit}>
           <Block display={'flex'}>
             <Block width={'scale3200'}>
@@ -87,8 +105,8 @@ const PhoneLogin = () => {
                   ]}
                   overrides={{
                     Root: {
-                      style: ({ $theme }) => ({
-                        width: $theme.sizing.scale2400,
+                      style: () => ({
+                        maxWidth: '68%',
                       }),
                     },
                     ClearIcon: {
@@ -141,8 +159,10 @@ const PhoneLogin = () => {
                   onBlur={formik.handleBlur}
                   overrides={{
                     Root: {
-                      style: () => ({
-                        width: '20vw',
+                      style: ({ $theme }) => ({
+                        [$theme.mediaQuery.small]: {
+                          minWidth: '15vw',
+                        },
                       }),
                     },
                   }}

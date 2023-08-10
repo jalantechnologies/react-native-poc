@@ -6,7 +6,7 @@ import { FormControl } from 'baseui/form-control';
 import { Input } from 'baseui/input';
 import {
   HeadingMedium,
-  HeadingSmall,
+  HeadingXSmall,
   ParagraphXSmall,
 } from 'baseui/typography';
 import { Button } from 'baseui/button';
@@ -44,18 +44,25 @@ const OtpVerification = () => {
   return (
     <Block
       display={'flex'}
+      flexDirection={['column', 'column', 'row']}
+      justifyContent={['flex-start', 'center']}
+      alignItems={['center', 'center', 'normal']}
       backgroundColor={'accent100'}
       width={'100vw'}
       height={'100vh'}
     >
       <Block
-        maxWidth={'60%'}
-        margin={'scale900'}
-        overflow={'hidden'}
+        maxWidth={['85%', '80%', '60%']}
+        height={['40vh', '50vh', '90vh']}
+        marginBottom={['scale200', 'scale200', 'scale900']}
+        marginTop={'scale900'}
+        marginRight={['auto', 'scale900']}
+        marginLeft={['auto', 'scale900']}
         overrides={{
           Block: {
             style: ({ $theme }) => ({
               borderRadius: $theme.sizing.scale400,
+              overflow: 'hidden',
             }),
           },
         }}
@@ -66,13 +73,19 @@ const OtpVerification = () => {
           alt="left-heading-img"
         />
       </Block>
-      <Block marginTop={'auto'} marginBottom={'auto'}>
+      <Block
+        marginTop={['scale200', 'scale400', 'auto']}
+        marginBottom={['scale200', 'auto']}
+        marginLeft={['scale800', 'none']}
+      >
         <HeadingMedium marginBottom={'scale200'}>
           Welcome to pinch
         </HeadingMedium>
-        <HeadingSmall marginBottom={'scale800'}>Please enter OTP</HeadingSmall>
+        <HeadingXSmall marginBottom={['scale200', 'scale400', 'scale800']}>
+          Please enter OTP
+        </HeadingXSmall>
         <form onSubmit={formik.handleSubmit}>
-          <Block position={'relative'}>
+          <Block marginTop={'2rem'} position={'relative'}>
             <FormControl>
               <Input
                 required
@@ -82,13 +95,6 @@ const OtpVerification = () => {
                 placeholder="Enter OTP"
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                overrides={{
-                  Root: {
-                    style: () => ({
-                      width: '20vw',
-                    }),
-                  },
-                }}
               />
             </FormControl>
             {formik.errors.otp && formik.touched.otp ? (
